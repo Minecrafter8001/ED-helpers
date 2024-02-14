@@ -1,53 +1,24 @@
-
-Sub Worksheet_SelectionChange(ByVal Target As Range)
-    If Intersect(Target, Range("A:A")) Is Nothing Then Exit Sub
-    Target.Copy
-End Sub
-
-Sub AddCheckboxes()
-    Dim rng As Range
-    Dim cell As Range
-    Dim chk As CheckBox
+Private Sub Worksheet_SelectionChange(ByVal Target As Range)
     Dim col As String
-    Dim ws As Worksheet
-    Dim isEmpty As Boolean
+    col = "G" ' Specify your column here
 
-    ' Auto-detect the active sheet
-    Set ws = ActiveSheet
-
-    ' Request the column to affect
-    col = InputBox("Enter the column to add checkboxes (e.g., 'I')", "Input needed", "I")
-
-    ' Define the range to check for empty cells (always Column A)
-    Set rng = ws.Range("A2:A" & ws.Cells(Rows.Count, "A").End(xlUp).Row)
-
-    ' Check if all cells in Column A are empty
-    isEmpty = Application.WorksheetFunction.CountA(rng) = 0
-
-    ' If all cells in Column A are empty, exit the subroutine
-    If isEmpty Then
-        MsgBox "All cells in Column A are empty. No checkboxes will be added.", vbInformation
-        Exit Sub
+    ' Check if the selected cell is in column A
+    If Not Intersect(Target, Range("A:A")) Is Nothing Then
+        ' Copy the contents of the selected cell
+        Target.Copy
     End If
 
-    ' Define the range to add checkboxes (the specified column)
-    Set rng = ws.Range(col & "2:" & col & ws.Cells(Rows.Count, col).End(xlUp).Row)
-
-    ' Remove any existing checkboxes
-    For Each chk In ws.CheckBoxes
-        If Not Intersect(chk.TopLeftCell, rng) Is Nothing Then chk.Delete
-    Next chk
-
-    ' Add "Done" to the first row of the specified column
-    ws.Range(col & "1").Value = "Done"
-
-    ' Add checkboxes
-    For Each cell In rng
-        With ws.CheckBoxes.Add(cell.Left, cell.Top, cell.Width, cell.Height)
-            .Caption = "Done"
-        End With
-    Next cell
+    ' Check if the selected cell is in the specified column (G)
+    If Not Intersect(Target, Range(col & ":" & col)) Is Nothing Then
+        ' If the cell is empty or contains "Done", toggle its content
+        If Target.Value = "" Then
+            Target.Value = "Done"
+        ElseIf Target.Value = "Done" Then
+            Target.Value = ""
+        End If
+    End If
 End Sub
+
 
 
 Sub RemoveMatchingPart()
