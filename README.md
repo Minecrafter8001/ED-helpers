@@ -1,5 +1,4 @@
 # ED-helpers
-usefull tools to streamline some stuff relating to elite dangerous
+Useful tools to streamline some aspects of Elite Dangerous:
 
-something to note is that none of these currently affect the game in any way
-but they do help with the use of external apps like ED discovery or exel
+It’s important to note that none of these tools currently affect the game in any way. However, they do assist with the use of external apps like ED Discovery or Excel.
