@@ -115,5 +115,37 @@ Sub FormatAndRenameColumns()
     Next i
 End Sub
 
+Sub ApplyDarkMode()
+    Dim ws As Worksheet
 
+    ' Auto-detect the active sheet
+    Set ws = ActiveSheet
+
+    ' Select all cells
+    ws.Cells.Select
+
+    ' Change the background color to gray
+    With Selection.Interior
+        .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+        .ThemeColor = xlThemeColorDark1
+        .TintAndShade = -1
+        .PatternTintAndShade = 0
+    End With
+
+    ' Change the font color to white
+    With Selection.Font
+        .ThemeColor = xlThemeColorLight1
+        .TintAndShade = 1
+    End With
+
+    ' Apply white borders
+    With Selection.Borders
+        .LineStyle = xlContinuous
+        .Color = RGB(255, 255, 255)
+    End With
+
+    ' Deselect cells
+    ws.Cells(1, 1).Select
+End Sub
 
