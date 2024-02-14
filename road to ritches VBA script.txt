@@ -10,6 +10,7 @@ Sub AddCheckboxes()
     Dim chk As CheckBox
     Dim col As String
     Dim ws As Worksheet
+    Dim isEmpty As Boolean
 
     ' Auto-detect the active sheet
     Set ws = ActiveSheet
@@ -17,13 +18,28 @@ Sub AddCheckboxes()
     ' Request the column to affect
     col = InputBox("Enter the column to add checkboxes (e.g., 'I')", "Input needed", "I")
 
-    ' Define the range to add checkboxes
-    Set rng = ws.Range(col & "1:" & col & ws.Cells(Rows.Count, col).End(xlUp).Row)
+    ' Define the range to check for empty cells (always Column A)
+    Set rng = ws.Range("A2:A" & ws.Cells(Rows.Count, "A").End(xlUp).Row)
+
+    ' Check if all cells in Column A are empty
+    isEmpty = Application.WorksheetFunction.CountA(rng) = 0
+
+    ' If all cells in Column A are empty, exit the subroutine
+    If isEmpty Then
+        MsgBox "All cells in Column A are empty. No checkboxes will be added.", vbInformation
+        Exit Sub
+    End If
+
+    ' Define the range to add checkboxes (the specified column)
+    Set rng = ws.Range(col & "2:" & col & ws.Cells(Rows.Count, col).End(xlUp).Row)
 
     ' Remove any existing checkboxes
     For Each chk In ws.CheckBoxes
         If Not Intersect(chk.TopLeftCell, rng) Is Nothing Then chk.Delete
     Next chk
+
+    ' Add "Done" to the first row of the specified column
+    ws.Range(col & "1").Value = "Done"
 
     ' Add checkboxes
     For Each cell In rng
@@ -32,6 +48,7 @@ Sub AddCheckboxes()
         End With
     Next cell
 End Sub
+
 
 Sub RemoveMatchingPart()
     Dim rng As Range
