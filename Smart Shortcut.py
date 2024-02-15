@@ -2,7 +2,7 @@ import psutil
 from AppOpener import open
 import time
 import threading
-
+debug = False
 programs = [
     ("SrvSurvey.exe", "Srv Survey"),
     ("Elite Dangerous Odyssey Materials Helper.exe", "EDOMH"),
@@ -34,7 +34,7 @@ def openProgram(process, program):
 # Get the list of running processes
 running_processes = [proc.name().lower() for proc in psutil.process_iter()]
 
-debug = True
+debug = False
 if debug:
     starttime = time.time()
 
